@@ -4,23 +4,33 @@ const app = express()
 const { v4: uuidv4 } = require('uuid');
 
 app.use(cors())
+app.use(express.json())
+
 
 let items = [
 	{
 	  id: 1,
 	  name: "breakfast",
+	  year:2024,
+	  month:1,
+	  day:1
 	},
 	{
 	  id: 2,
 	  name: "workout",
+	  year:2024,
+	  month:1,
+	  day:1
 	},
 	{
 	  id: 3,
 	  name: "work",
+	  year:2024,
+	  month:1,
+	  day:1
 	}
   ]
 
-  app.use(express.json())
 
 app.get("/api/items", (request, response) => {
 	response.json(items)
@@ -39,10 +49,9 @@ app.get("/api/items/:id", (request, response) => {
 })
 
 app.post("/api/items", (request, response) => {
-	console.log(request.body.name)
-	const item = {name: request.body.name, id: uuidv4()}
+	const body = request.body
+	const item = {name: body.name, id: uuidv4(), year: body.year, month:body.month + 1, day:body.day}
 	console.log(item)
-
 	items = items.concat(item)
 	response.json(item)
 })
