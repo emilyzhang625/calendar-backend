@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const app = express()
+const { v4: uuidv4 } = require('uuid');
 
 app.use(cors())
 
@@ -38,7 +39,8 @@ app.get("/api/items/:id", (request, response) => {
 })
 
 app.post("/api/items", (request, response) => {
-	const item = request.body
+	console.log(request.body.name)
+	const item = {name: request.body.name, id: uuidv4()}
 	console.log(item)
 
 	items = items.concat(item)
