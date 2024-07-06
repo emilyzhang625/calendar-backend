@@ -1,7 +1,8 @@
 const express = require("express")
+const cors = require("cors")
 const app = express()
 
-app.use(express.json())
+app.use(cors())
 
 let items = [
 	{
@@ -17,6 +18,8 @@ let items = [
 	  name: "work",
 	}
   ]
+
+  app.use(express.json())
 
 app.get("/api/items", (request, response) => {
 	response.json(items)
@@ -35,17 +38,7 @@ app.get("/api/items/:id", (request, response) => {
 })
 
 app.post("/api/items", (request, response) => {
-	const body = request.body
-
-	if (!body) {
-		return response.status(400).json({error: "content missing"})
-	}
-
-	//need to fix id
-	const item = {
-		content: body.content,
-		id: 1
-	}
+	const item = request.body
 	console.log(item)
 
 	items = items.concat(item)
