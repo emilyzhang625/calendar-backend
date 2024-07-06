@@ -7,29 +7,7 @@ app.use(cors())
 app.use(express.json())
 
 
-let items = [
-	{
-	  id: 1,
-	  name: "breakfast",
-	  year:2024,
-	  month:1,
-	  day:1
-	},
-	{
-	  id: 2,
-	  name: "workout",
-	  year:2024,
-	  month:1,
-	  day:1
-	},
-	{
-	  id: 3,
-	  name: "work",
-	  year:2024,
-	  month:1,
-	  day:1
-	}
-  ]
+let items = []
 
 
 app.get("/api/items", (request, response) => {
