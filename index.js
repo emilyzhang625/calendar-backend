@@ -28,7 +28,7 @@ app.get("/api/items/:id", (request, response) => {
 
 app.post("/api/items", (request, response) => {
 	const body = request.body
-	const item = {name: body.name, id: uuidv4(), year: body.year, month:body.month + 1, day:body.day}
+	const item = {name: body.name, id: uuidv4(), year: body.year, month:body.month, day:body.day}
 	console.log(item)
 	items = items.concat(item)
 	response.json(item)
