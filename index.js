@@ -38,9 +38,17 @@ app.delete("/api/items/:id", (request,response) => {
 	if (item) {
 		response.json(item);
 	}
-		else {
-	response.status(204).end();
-		}
+	else {
+		response.status(204).end();
+	}
+})
+
+app.put("/api/items/:id", (request,response) => {
+	const id = request.params.id
+	const index = items.findIndex(item => item.id === id)
+	const item = request.body
+	items[index] = item
+	response.json(item)
 })
 
 const PORT = 3001
