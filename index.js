@@ -42,17 +42,24 @@ app.post('/api/items', (request, response) => {
 	})
 })
 
-app.delete("/api/items/:id", (request,response) => {
-	const id = (request.params.id)
-	const item = items.find(item => item.id === id)
-	items = items.filter(item => item.id !== id)
-	if (item) {
-		response.json(item);
-	}
-	else {
-		response.status(204).end();
-	}
+app.delete('/api/items/:id', (request, response) => {
+	Item.findByIdAndDelete(request.params.id)
+	  .then(result => {
+		response.status(204).end()
+	  })
 })
+
+// app.delete("/api/items/:id", (request,response) => {
+// 	const id = (request.params.id)
+// 	const item = items.find(item => item.id === id)
+// 	items = items.filter(item => item.id !== id)
+// 	if (item) {
+// 		response.json(item);
+// 	}
+// 	else {
+// 		response.status(204).end();
+// 	}
+// })
 
 app.put("/api/items/:id", (request,response) => {
 	const id = request.params.id
