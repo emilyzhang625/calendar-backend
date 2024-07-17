@@ -17,20 +17,10 @@ app.get('/api/items', (request, response) => {
 	})
 })
 
-// app.get("/api/items", (request, response) => {
-// 	response.json(items)
-// })
-
-app.get("/api/items/:id", (request, response) => {
-	const id = (request.params.id)
-	const item = items.find(item => item.id === id)
-
-	if (item) {
-		response.json(item)
-	}
-	else {
-		response.status(404).end()
-	}
+app.get('/api/items/:id', (request, response) => {
+	Item.findById(request.params.id).then(item => {
+	  response.json(item)
+	})
 })
 
 app.post('/api/items', (request, response) => {
