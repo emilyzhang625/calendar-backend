@@ -9,7 +9,6 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/api/users', (request, response) => {
-	console.log("here")
 	User.find({}).then(users => {
 	  response.json(users)
 	})
@@ -20,12 +19,28 @@ app.post('/api/users', (request, response) => {
 
 	const user = new User({
 		username: body.username,
-		password: body.password
+		password: body.password,
+		items:body.items
 	})
   
 	user.save().then(savedUser => {
 	  response.json(savedUser)
 	})
+})
+
+app.put('/api/users/:id', (request, response) => {
+	const body = request.body
+  
+	const user = {
+		username: body.username,
+		password: body.password,
+		items:body.items
+	  }
+  
+	User.findByIdAndUpdate(request.params.id, user)
+	  .then(updatedUser => {
+		response.json(updatedUser)
+	  })
 })
 
 const PORT = process.env.PORT
