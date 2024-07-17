@@ -1,9 +1,10 @@
-const Item = require('./item')
+require('dotenv').config()
 
 const express = require("express")
 const cors = require("cors")
 const app = express()
 const { v4: uuidv4 } = require('uuid');
+const Item = require('./item')
 
 app.use(cors())
 app.use(express.json())
@@ -16,9 +17,9 @@ app.get('/api/items', (request, response) => {
 	})
 })
 
-app.get("/api/items", (request, response) => {
-	response.json(items)
-})
+// app.get("/api/items", (request, response) => {
+// 	response.json(items)
+// })
 
 app.get("/api/items/:id", (request, response) => {
 	const id = (request.params.id)
@@ -32,11 +33,23 @@ app.get("/api/items/:id", (request, response) => {
 	}
 })
 
-app.post("/api/items", (request, response) => {
+app.post('/api/items', (request, response) => {
 	const body = request.body
-	const item = {name: body.name, id: uuidv4(), year: body.year, month:body.month, day:body.day}
-	items = items.concat(item)
-	response.json(item)
+  
+	if (body.name === undefined) {
+	  return response.status(400).json({ error: 'content missing' })
+	}
+  
+	const item = new Item({
+	  name: body.name,
+	  year: body.year,
+	  month: body.month,
+	  day: body.day
+	})
+  
+	item.save().then(savedItem => {
+	  response.json(savedItem)
+	})
 })
 
 app.delete("/api/items/:id", (request,response) => {
@@ -59,7 +72,7 @@ app.put("/api/items/:id", (request,response) => {
 	response.json(item)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`)
 })
