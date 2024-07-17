@@ -49,25 +49,29 @@ app.delete('/api/items/:id', (request, response) => {
 	  })
 })
 
-// app.delete("/api/items/:id", (request,response) => {
-// 	const id = (request.params.id)
-// 	const item = items.find(item => item.id === id)
-// 	items = items.filter(item => item.id !== id)
-// 	if (item) {
-// 		response.json(item);
-// 	}
-// 	else {
-// 		response.status(204).end();
-// 	}
-// })
-
-app.put("/api/items/:id", (request,response) => {
-	const id = request.params.id
-	const index = items.findIndex(item => item.id === id)
-	const item = request.body
-	items[index] = item
-	response.json(item)
+app.put('/api/items/:id', (request, response) => {
+	const body = request.body
+  
+	const item = {
+		name: body.name,
+		year: body.year,
+		month: body.month,
+		day: body.day
+	  }
+  
+	Item.findByIdAndUpdate(request.params.id, item)
+	  .then(updatedItem => {
+		response.json(updatedItem)
+	  })
 })
+
+// app.put("/api/items/:id", (request,response) => {
+// 	const id = request.params.id
+// 	const index = items.findIndex(item => item.id === id)
+// 	const item = request.body
+// 	items[index] = item
+// 	response.json(item)
+// })
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
