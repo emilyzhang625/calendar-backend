@@ -1,29 +1,4 @@
-require('dotenv').config();
-
-const mongoose = require('mongoose')
-
-const url = process.env.MONGODB_URI
-
-mongoose.set('strictQuery',false)
-
-mongoose.connect(url)
-
-const itemSchema = new mongoose.Schema({
-	name: String,
-	year: Number,
-	month: Number,
-	day: Number
-})
-
-itemSchema.set('toJSON', {
-	transform: (document, returnedObject) => {
-	  returnedObject.id = returnedObject._id.toString()
-	  delete returnedObject._id
-	  delete returnedObject.__v
-	}
-})
-
-const Item = mongoose.model('Item', itemSchema)
+const Item = require('./item')
 
 const express = require("express")
 const cors = require("cors")

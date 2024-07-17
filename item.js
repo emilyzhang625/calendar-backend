@@ -2,11 +2,19 @@ require('dotenv').config();
 
 const mongoose = require('mongoose')
 
+mongoose.set('strictQuery', false)
+
 const url = process.env.MONGODB_URI
 
-mongoose.set('strictQuery',false)
+console.log('connecting to', url)
 
 mongoose.connect(url)
+  .then(result => {
+    console.log('connected to MongoDB')
+  })
+  .catch(error => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
 const itemSchema = new mongoose.Schema({
 	name: String,
@@ -15,24 +23,12 @@ const itemSchema = new mongoose.Schema({
 	day: Number
 })
 
-const Item = mongoose.model('Item', itemSchema)
-
-const item = new Item({
-	name: "test3",
-	year: 2024,
-	month: 6,
-	day: 11
+itemSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
 })
 
-//able to add year:2024 inside {} to only find certain items
-Item.find({}).then(result => {
-	result.forEach(item => {
-		console.log(item)
-	})
-	mongoose.connection.close()
-})
-
-// item.save().then(result => {
-//   console.log('item saved!')
-//   mongoose.connection.close()
-// })
+module.exports = mongoose.model('Item', itemSchema)
