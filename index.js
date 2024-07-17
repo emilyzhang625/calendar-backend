@@ -3,13 +3,10 @@ require('dotenv').config()
 const express = require("express")
 const cors = require("cors")
 const app = express()
-const { v4: uuidv4 } = require('uuid');
 const Item = require('./item')
 
 app.use(cors())
 app.use(express.json())
-
-let items = []
 
 app.get('/api/items', (request, response) => {
 	Item.find({}).then(items => {
@@ -64,14 +61,6 @@ app.put('/api/items/:id', (request, response) => {
 		response.json(updatedItem)
 	  })
 })
-
-// app.put("/api/items/:id", (request,response) => {
-// 	const id = request.params.id
-// 	const index = items.findIndex(item => item.id === id)
-// 	const item = request.body
-// 	items[index] = item
-// 	response.json(item)
-// })
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
