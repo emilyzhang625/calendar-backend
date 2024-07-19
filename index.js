@@ -3,62 +3,51 @@ require('dotenv').config()
 const express = require("express")
 const cors = require("cors")
 const app = express()
-const Item = require('./item')
+const User = require('./user')
 
 app.use(cors())
 app.use(express.json())
 
-app.get('/api/items', (request, response) => {
-	Item.find({}).then(items => {
-	  response.json(items)
+app.get('/api/users', (request, response) => {
+	User.find({}).then(users => {
+	  response.json(users)
 	})
 })
 
-app.get('/api/items/:id', (request, response) => {
-	Item.findById(request.params.id).then(item => {
-	  response.json(item)
+app.get('/api/users/:id', (request, response) => {
+	User.findById(request.params.id).then(user => {
+	  response.json(user)
 	})
 })
 
-app.post('/api/items', (request, response) => {
+app.post('/api/users', (request, response) => {
+	const body = request.body
+
+	const user = new User({
+		username: body.username,
+		password: body.password,
+		items:body.items
+	})
+  
+	user.save().then(savedUser => {
+	  response.json(savedUser)
+	})
+})
+
+app.put('/api/users/:id', (request, response) => {
 	const body = request.body
   
-	if (body.name === undefined) {
-	  return response.status(400).json({ error: 'content missing' })
+	const user = {
+		username: body.username,
+		password: body.password,
+		items:body.items
 	}
-  
-	const item = new Item({
-	  name: body.name,
-	  year: body.year,
-	  month: body.month,
-	  day: body.day
-	})
-  
-	item.save().then(savedItem => {
-	  response.json(savedItem)
-	})
-})
 
-app.delete('/api/items/:id', (request, response) => {
-	Item.findByIdAndDelete(request.params.id)
-	  .then(result => {
-		response.status(204).end()
-	  })
-})
-
-app.put('/api/items/:id', (request, response) => {
-	const body = request.body
+	console.log(user)
   
-	const item = {
-		name: body.name,
-		year: body.year,
-		month: body.month,
-		day: body.day
-	  }
-  
-	Item.findByIdAndUpdate(request.params.id, item)
-	  .then(updatedItem => {
-		response.json(updatedItem)
+	User.findByIdAndUpdate(request.params.id, user)
+	  .then(updatedUser => {
+		response.json(updatedUser)
 	  })
 })
 

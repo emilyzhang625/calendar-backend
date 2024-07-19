@@ -1,49 +1,33 @@
-require('dotenv').config()
+require('dotenv').config();
 
-const express = require("express")
-const cors = require("cors")
-const app = express()
-const User = require('./helpUser')
+const mongoose = require('mongoose')
 
-app.use(cors())
-app.use(express.json())
+mongoose.set('strictQuery', false)
 
-app.get('/api/users', (request, response) => {
-	User.find({}).then(users => {
-	  response.json(users)
-	})
+const url = process.env.MONGODB_URI
+
+console.log('connecting to', url)
+
+mongoose.connect(url)
+  .then(result => {
+    console.log('connected to MongoDB')
+  })
+  .catch(error => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
+
+const userSchema = new mongoose.Schema({
+	username:String,
+	password:String,
+	items: Array
 })
 
-app.post('/api/users', (request, response) => {
-	const body = request.body
-
-	const user = new User({
-		username: body.username,
-		password: body.password,
-		items:body.items
-	})
-  
-	user.save().then(savedUser => {
-	  response.json(savedUser)
-	})
+userSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
 })
 
-app.put('/api/users/:id', (request, response) => {
-	const body = request.body
-  
-	const user = {
-		username: body.username,
-		password: body.password,
-		items:body.items
-	  }
-  
-	User.findByIdAndUpdate(request.params.id, user)
-	  .then(updatedUser => {
-		response.json(updatedUser)
-	  })
-})
-
-const PORT = process.env.PORT
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`)
-})
+module.exports = mongoose.model('User', userSchema)
