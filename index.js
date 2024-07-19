@@ -42,8 +42,6 @@ app.put('/api/users/:id', (request, response) => {
 		password: body.password,
 		items:body.items
 	}
-
-	console.log(user)
   
 	User.findByIdAndUpdate(request.params.id, user)
 	  .then(updatedUser => {
