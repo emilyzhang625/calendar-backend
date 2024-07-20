@@ -4,20 +4,10 @@ const express = require("express")
 const cors = require("cors")
 const app = express()
 const User = require('./user')
-const path = require("path");  // Import the path module
-
 
 app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
-
-// Serve static files from the React app's build directory
-app.use(express.static(path.join(__dirname, 'build')));
-
-// Handle all routes and serve the main HTML file
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 app.get('/api/users', (request, response) => {
 	User.find({}).then(users => {
