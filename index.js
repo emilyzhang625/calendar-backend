@@ -49,6 +49,21 @@ app.put('/api/users/:id', (request, response) => {
 	  })
 })
 
+app.delete('/api/users/:id', (request,response) => {
+	const body = request.body
+  
+	const user = {
+		username: body.username,
+		password: body.password,
+		items:body.items
+	}
+
+	User.findByIdAndDelete(request.params.id, user)
+	  .then(removedUser => {
+		response.json(removedUser)
+	  })
+})
+
 const PORT = process.env.PORT
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`)
