@@ -5,3 +5,5 @@ A dynamic calendar application for effortless scheduling to enhance life organiz
 _Note: The link may take up to a minute to load due to Render's free-tier._
 
 **Technology used:** React, Node.js, Express, MongoDB Atlas, Render
+
+**Frontend repository:** [calendar-frontend](https://github.com/emilyzhang625/calendar-frontend)
