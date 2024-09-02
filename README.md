@@ -4,6 +4,6 @@ A dynamic calendar platform featuring event scheduling, monthly views, and user 
 **Live Demo:** [Calendar](https://calendar-elir.onrender.com/)  
 _Note: The link may take up to a minute to load due to Render's free-tier._
 
-**Tech Stack:** React, Node.js, Express, MongoDB Atlas, Render
+**Tech Stack:** React, Node.js, Express, MongoDB, Render
 
 **Frontend Repo:** [calendar-frontend](https://github.com/emilyzhang625/calendar-frontend)
