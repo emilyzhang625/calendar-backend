@@ -1,5 +1,4 @@
 # Calendar
-A dynamic calendar platform featuring event scheduling, monthly views, and user authentication and updation.
 
 **Live Demo:** [Calendar](https://calendar-elir.onrender.com/)  
 
